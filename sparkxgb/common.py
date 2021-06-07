@@ -30,8 +30,12 @@ class ParamGettersSetters(Params):
     def _create_param_getters_and_setters(self):
         for param in self.params:
             param_name = param.name
-            fg_attr = "get" + re.sub(r"(?:^|_)(.)", lambda m: m.group(1).upper(), param_name)
-            fs_attr = "set" + re.sub(r"(?:^|_)(.)", lambda m: m.group(1).upper(), param_name)
+            fg_attr = "get" + re.sub(
+                r"(?:^|_)(.)", lambda m: m.group(1).upper(), param_name
+            )
+            fs_attr = "set" + re.sub(
+                r"(?:^|_)(.)", lambda m: m.group(1).upper(), param_name
+            )
             # Generates getter and setter only if not exists
             try:
                 getattr(self, fg_attr)
@@ -48,16 +52,20 @@ class ParamGettersSetters(Params):
                 return self.getOrDefault(param_name)
             except KeyError:
                 return None
+
         return r
 
     def _set_param_value(self, param_name):
         def r(v):
             self.set(self.getParam(param_name), v)
             return self
+
         return r
 
 
-class XGboostEstimator(JavaEstimator, XGBoostReadable, JavaMLWritable, ParamGettersSetters):
+class XGboostEstimator(
+    JavaEstimator, XGBoostReadable, JavaMLWritable, ParamGettersSetters
+):
     """
     Mixin class for XGBoost estimators, like XGBoostClassifier and XGBoostRegressor.
     """
